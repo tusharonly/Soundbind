@@ -87,6 +87,8 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .soundbindThemed()
         .frame(width: 460)
         .fixedSize(horizontal: false, vertical: true)
         .onAppear { model.launchAtLogin.refresh() }

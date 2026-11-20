@@ -43,7 +43,7 @@ struct WaveformThumbnail: View {
     var body: some View {
         let shape = WaveformShape(samples: samples)
         ZStack {
-            shape.fill(.tertiary)
+            shape.fill(Theme.ink.opacity(0.22))
             if let playback {
                 PlaybackProgressView(playback: playback) { progress in
                     shape

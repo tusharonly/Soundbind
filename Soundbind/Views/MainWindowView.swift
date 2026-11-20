@@ -40,6 +40,9 @@ struct MainWindowView: View {
             }
         }
         .frame(minWidth: 500, minHeight: 400)
+        .soundbindThemed()
+        .toolbarBackground(Theme.background, for: .windowToolbar)
+        .toolbarBackground(.visible, for: .windowToolbar)
         // The whole window is a drop target. Unsupported files are reported inline.
         .dropDestination(for: URL.self) { urls, _ in
             model.importFiles(urls)

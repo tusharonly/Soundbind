@@ -77,6 +77,10 @@ User data is in the sandbox container, under `~/Library/Containers/<bundle id>/D
 
 Shortcuts are stored by KeyboardShortcuts in `UserDefaults`.
 
+## Design
+
+The look is defined in `Soundbind/Views/Theme.swift`: a warm cream background, near-black "ink" text and buttons, a fuchsia marker highlight for selection and hotkey flashes, teal for interactive controls, and large soft squircle cards. Each colour has a light and a dark variant. This replaces the system accent colour and default materials on purpose, so the app no longer follows the user's accent colour setting.
+
 ## Decisions worth knowing about
 
 - **Extra fields on `SoundItem`.** `duration` and `waveform` (40 normalised peaks) are stored alongside the fields in the brief, so rows never reopen the audio file.

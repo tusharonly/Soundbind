@@ -5,23 +5,24 @@ struct DropOverlayView: View {
     var body: some View {
         ZStack {
             Rectangle().fill(.thinMaterial)
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(.tint.opacity(0.08))
+            Theme.card(22)
+                .fill(Theme.highlight.opacity(0.14))
                 .padding(10)
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .strokeBorder(.tint, style: StrokeStyle(lineWidth: 2.5, dash: [9, 6]))
+            Theme.card(22)
+                .strokeBorder(Theme.highlight, style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [10, 8]))
                 .padding(10)
             VStack(spacing: 10) {
                 Image(systemName: "square.and.arrow.down")
-                    .font(.system(size: 40, weight: .light))
+                    .font(.system(size: 36, weight: .semibold))
                 Text("Drop to add")
-                    .font(.title2.weight(.semibold))
+                    .font(.title.weight(.bold))
+                    .tracking(-0.5)
             }
-            .foregroundStyle(.tint)
-            .padding(.horizontal, 36)
-            .padding(.vertical, 26)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .shadow(color: .black.opacity(0.12), radius: 12, y: 3)
+            .foregroundStyle(Theme.onInk)
+            .padding(.horizontal, 40)
+            .padding(.vertical, 28)
+            .background(Theme.ink, in: Theme.card(24))
+            .shadow(color: .black.opacity(0.25), radius: 18, y: 8)
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)
@@ -54,7 +55,7 @@ private struct NoticeRow: View {
                 .foregroundStyle(tint)
                 .accessibilityHidden(true)
             Text(notice.text)
-                .font(.callout)
+                .font(.callout.weight(.medium))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .textSelection(.enabled)
@@ -69,11 +70,11 @@ private struct NoticeRow: View {
             .help("Dismiss")
             .accessibilityLabel("Dismiss message")
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(tint.opacity(0.12))
-        .background(.bar)
-        .overlay(alignment: .bottom) { Divider() }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(tint.opacity(0.16), in: Theme.card(12))
+        .padding(.horizontal, 12)
+        .padding(.top, 8)
         .accessibilityElement(children: .contain)
     }
 
@@ -101,19 +102,26 @@ struct ToastView: View {
     var body: some View {
         HStack(spacing: 12) {
             Text(toast.message)
-                .font(.callout)
+                .font(.callout.weight(.semibold))
                 .lineLimit(2)
             if let title = toast.actionTitle, let action = toast.action {
-                Button(title, action: action)
-                    .buttonStyle(.link)
-                    .font(.callout.weight(.semibold))
+                Button(action: action) {
+                    Text(title)
+                        .font(.callout.weight(.bold))
+                        .foregroundStyle(Theme.ink)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(Theme.highlight, in: Capsule())
+                }
+                .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.regularMaterial, in: Capsule())
-        .overlay { Capsule().strokeBorder(.separator, lineWidth: 0.5) }
-        .shadow(color: .black.opacity(0.18), radius: 10, y: 3)
+        .foregroundStyle(Theme.onInk)
+        .padding(.leading, 18)
+        .padding(.trailing, toast.actionTitle == nil ? 18 : 8)
+        .padding(.vertical, toast.actionTitle == nil ? 11 : 8)
+        .background(Theme.ink, in: Capsule())
+        .shadow(color: .black.opacity(0.25), radius: 14, y: 6)
         .padding(.bottom, 16)
         .padding(.horizontal, 16)
     }
@@ -126,19 +134,22 @@ struct FirstRunHintView: View {
     var body: some View {
         HStack(spacing: 10) {
             Image(systemName: "lightbulb.fill")
-                .foregroundStyle(.yellow)
+                .foregroundStyle(Theme.ink)
+                .frame(width: 28, height: 28)
+                .background(Theme.highlight, in: Theme.card(9))
                 .accessibilityHidden(true)
             Text("Add a sound, then record a shortcut. It will play from anywhere, even with this window closed.")
-                .font(.callout)
+                .font(.callout.weight(.medium))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
             Button("Got It") { model.dismissHint() }
                 .controlSize(.small)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 9)
-        .background(.bar)
-        .overlay(alignment: .top) { Divider() }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(Theme.surface, in: Theme.card())
+        .padding(.horizontal, 12)
+        .padding(.bottom, 12)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Tip")
     }

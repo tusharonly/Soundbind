@@ -12,7 +12,7 @@ struct SoundListView: View {
 
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(spacing: 4) {
+                LazyVStack(spacing: 6) {
                     ForEach(items) { item in
                         SoundRowView(item: item, isSelected: model.selection == item.id) {
                             isListFocused = true
@@ -21,8 +21,8 @@ struct SoundListView: View {
                         .transition(Motion.rowTransition(reduceMotion: reduceMotion))
                     }
                 }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
                 .animation(Motion.spring(reduceMotion: reduceMotion), value: items.map(\.id))
             }
             .overlay {

@@ -17,7 +17,7 @@ struct PlayButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(isPlaying ? AnyShapeStyle(.tint.opacity(0.18)) : AnyShapeStyle(.quaternary))
+                    .fill(isPlaying ? AnyShapeStyle(.tint.opacity(0.18)) : AnyShapeStyle(Theme.surfaceStrong))
                 Circle()
                     .strokeBorder(.tint.opacity(isHovered && isEnabled ? 0.6 : 0), lineWidth: 1)
                 if let playback {
@@ -31,7 +31,7 @@ struct PlayButton: View {
                 }
                 Image(systemName: isPlaying ? "stop.fill" : "play.fill")
                     .font(.system(size: diameter * 0.36, weight: .semibold))
-                    .foregroundStyle(isPlaying ? AnyShapeStyle(.tint) : AnyShapeStyle(.primary))
+                    .foregroundStyle(isPlaying ? AnyShapeStyle(.tint) : AnyShapeStyle(Theme.ink))
                     .contentTransition(.symbolEffect(.replace))
                     .symbolEffect(.pulse, options: .repeating, isActive: isPlaying && !reduceMotion)
             }

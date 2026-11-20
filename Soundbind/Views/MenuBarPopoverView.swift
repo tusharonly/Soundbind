@@ -16,73 +16,104 @@ struct MenuBarPopoverView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openSettings) private var openSettings
 
-    private static let rowHeight: CGFloat = 34
-    private static let maxListHeight: CGFloat = 340
+    private static let rowHeight: CGFloat = 38
+    private static let maxListHeight: CGFloat = 320
 
     var body: some View {
         let items = model.library.items
 
         VStack(spacing: 0) {
-            if items.isEmpty {
-                emptyState
-            } else {
-                ScrollView {
-                    VStack(spacing: 1) {
-                        ForEach(items) { item in
-                            MenuBarSoundRow(item: item)
-                                .frame(height: Self.rowHeight)
+            header
+            rule
+
+            VStack(spacing: 8) {
+                SectionLabel(title: "Sounds")
+                    .padding(.horizontal, 10)
+                if items.isEmpty {
+                    emptyState
+                } else {
+                    ScrollView {
+                        VStack(spacing: 2) {
+                            ForEach(items) { item in
+                                MenuBarSoundRow(item: item)
+                                    .frame(height: Self.rowHeight)
+                            }
                         }
                     }
-                    .padding(6)
+                    .frame(height: min(CGFloat(items.count) * (Self.rowHeight + 2), Self.maxListHeight))
                 }
-                .frame(height: min(CGFloat(items.count) * (Self.rowHeight + 1) + 12, Self.maxListHeight))
             }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 12)
 
-            Divider()
+            rule
 
             VStack(spacing: 1) {
-                MenuBarActionRow(title: "Open Soundbind…", systemImage: "macwindow") {
+                MenuBarActionRow(title: "Open Soundbind…") {
                     openMainWindow()
                 }
-                MenuBarActionRow(
-                    title: "Stop All Sounds",
-                    systemImage: "stop.fill",
-                    trailing: model.shortcutText(for: .stopAll)
-                ) {
+                MenuBarActionRow(title: "Stop All Sounds", trailing: model.shortcutText(for: .stopAll)) {
                     model.stopAll()
                 }
                 .disabled(!model.audio.isAnythingPlaying)
-                MenuBarActionRow(title: "Settings…", systemImage: "gearshape", trailing: "⌘,") {
+                MenuBarActionRow(title: "Soundbind Settings…", trailing: "⌘,") {
                     openSettings()
                     NSApp.activate(ignoringOtherApps: true)
                 }
                 .keyboardShortcut(",", modifiers: .command)
-                MenuBarActionRow(title: "Quit Soundbind", systemImage: "power", trailing: "⌘Q") {
+                MenuBarActionRow(title: "Quit Soundbind", trailing: "⌘Q") {
                     NSApp.terminate(nil)
                 }
                 .keyboardShortcut("q", modifiers: .command)
             }
-            .padding(6)
+            .padding(8)
         }
-        .frame(width: 300)
+        .frame(width: 310)
+        .foregroundStyle(Theme.ink)
+        .tint(Theme.accent)
+        .background(Theme.background.opacity(0.72))
+    }
+
+    private var rule: some View {
+        Rectangle()
+            .fill(Theme.hairline)
+            .frame(height: 1)
+            .padding(.horizontal, 18)
+    }
+
+    /// Title plus master volume, always one click away.
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Soundbind")
+                .font(.title3.weight(.bold))
+                .tracking(-0.3)
+            VStack(spacing: 6) {
+                SectionLabel(title: "Volume")
+                Slider(
+                    value: Binding(
+                        get: { Double(model.settings.masterVolume) },
+                        set: { model.setMasterVolume(Float($0)) }
+                    ),
+                    in: 0...1
+                )
+                .controlSize(.small)
+                .accessibilityLabel("Master volume")
+                .accessibilityValue("\(Int((model.settings.masterVolume * 100).rounded())) percent")
+            }
+        }
+        .padding(.horizontal, 18)
+        .padding(.top, 16)
+        .padding(.bottom, 14)
     }
 
     private var emptyState: some View {
-        VStack(spacing: 6) {
-            Image(systemName: "waveform")
-                .font(.title)
-                .foregroundStyle(.tint)
-                .accessibilityHidden(true)
-            Text("No sounds yet")
-                .font(.headline)
-            Text("Open Soundbind to add your first sound.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-        }
-        .padding(.vertical, 22)
-        .padding(.horizontal, 16)
-        .frame(maxWidth: .infinity)
+        Text("No sounds yet. Open Soundbind to add your first one.")
+            .font(.callout.weight(.medium))
+            .foregroundStyle(Theme.tertiaryInk)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
     }
 
     private func openMainWindow() {
@@ -101,15 +132,11 @@ private struct MenuBarSoundRow: View {
         let isMissing = model.library.isMissing(item.id)
 
         HStack(spacing: 8) {
-            PlayButton(soundName: item.displayName, playback: model.audio.playback[item.id], diameter: 24) {
-                model.togglePlayback(item.id)
-            }
-            .disabled(isMissing)
-
             Text(item.displayName)
+                .font(.body.weight(.semibold))
                 .lineLimit(1)
                 .truncationMode(.tail)
-                .foregroundStyle(isMissing || !item.isEnabled ? .secondary : .primary)
+                .foregroundStyle(isMissing || !item.isEnabled ? Theme.tertiaryInk : Theme.ink)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if isMissing {
@@ -121,12 +148,17 @@ private struct MenuBarSoundRow: View {
                 ShortcutBadge(text: shortcut)
                     .opacity(item.isEnabled ? 1 : 0.5)
             }
+
+            PlayButton(soundName: item.displayName, playback: model.audio.playback[item.id], diameter: 24) {
+                model.togglePlayback(item.id)
+            }
+            .disabled(isMissing)
         }
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 10)
         .frame(maxHeight: .infinity)
         .background {
             if isHovered {
-                RoundedRectangle(cornerRadius: 6, style: .continuous).fill(.quaternary)
+                Theme.card(10).fill(Theme.surfaceHover)
             }
         }
         .contentShape(Rectangle())
@@ -141,7 +173,6 @@ private struct MenuBarSoundRow: View {
 /// Footer command styled like a menu item.
 private struct MenuBarActionRow: View {
     let title: String
-    let systemImage: String
     var trailing: String?
     let action: () -> Void
 
@@ -151,28 +182,26 @@ private struct MenuBarActionRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
-                Image(systemName: systemImage)
-                    .frame(width: 18)
-                    .foregroundStyle(.secondary)
                 Text(title)
+                    .font(.body.weight(.medium))
                 Spacer()
                 if let trailing {
                     Text(trailing)
-                        .font(.callout)
-                        .foregroundStyle(.tertiary)
+                        .font(.callout.weight(.medium))
+                        .foregroundStyle(Theme.tertiaryInk)
                 }
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 7)
             .background {
                 if isHovered && isEnabled {
-                    RoundedRectangle(cornerRadius: 6, style: .continuous).fill(.quaternary)
+                    Theme.card(10).fill(Theme.surfaceHover)
                 }
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .onHover { isHovered = $0 }
-        .opacity(isEnabled ? 1 : 0.45)
+        .opacity(isEnabled ? 1 : 0.4)
     }
 }

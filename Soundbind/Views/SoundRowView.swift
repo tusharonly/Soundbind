@@ -50,10 +50,10 @@ struct SoundRowView: View {
                     .transition(.opacity)
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(background)
-        .contentShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+        .contentShape(Theme.card())
         .opacity(item.isEnabled ? 1 : 0.6)
         .onHover { isHovered = $0 }
         .onTapGesture {
@@ -93,9 +93,9 @@ struct SoundRowView: View {
                 WaveformThumbnail(samples: item.waveform, playback: playback)
                     .frame(width: 80, height: 16)
                 Text(item.duration.soundDurationText)
-                    .font(.caption)
+                    .font(.caption.weight(.semibold))
                     .monospacedDigit()
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.secondaryInk)
                     .accessibilityLabel("Duration \(item.duration.spokenSoundDuration)")
                 if item.isStreamed {
                     Image(systemName: "externaldrive")
@@ -111,7 +111,7 @@ struct SoundRowView: View {
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 5)
                     .padding(.vertical, 1)
-                    .background(.quaternary, in: Capsule())
+                    .background(Theme.surfaceStrong, in: Capsule())
                     .help("Shortcut disabled")
                     .accessibilityLabel("Shortcut disabled")
             }
@@ -125,7 +125,7 @@ struct SoundRowView: View {
         } label: {
             Image(systemName: volumeSymbol)
                 .symbolVariant(isExpanded ? .fill : .none)
-                .foregroundStyle(isExpanded ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+                .foregroundStyle(isExpanded ? AnyShapeStyle(.tint) : AnyShapeStyle(Theme.secondaryInk))
                 .frame(width: 22, height: 22)
                 .contentShape(Rectangle())
         }
@@ -140,7 +140,7 @@ struct SoundRowView: View {
             SoundMenuItems(item: item, isMissing: isMissing)
         } label: {
             Image(systemName: "ellipsis.circle")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.secondaryInk)
                 .frame(width: 22, height: 22)
                 .contentShape(Rectangle())
         }
@@ -161,15 +161,15 @@ struct SoundRowView: View {
     }
 
     private var background: some View {
-        let shape = RoundedRectangle(cornerRadius: 9, style: .continuous)
+        let shape = Theme.card()
         return ZStack {
             if isSelected {
-                shape.fill(.tint.opacity(0.16))
-                shape.strokeBorder(.tint.opacity(0.35), lineWidth: 1)
-            } else if isHovered {
-                shape.fill(.quaternary.opacity(0.6))
+                shape.fill(Theme.highlight.opacity(0.32))
+                shape.strokeBorder(Theme.highlight, lineWidth: 1.5)
+            } else {
+                shape.fill(isHovered ? Theme.surfaceHover : Theme.surface)
             }
-            shape.fill(.tint.opacity(0.45 * flash))
+            shape.fill(Theme.highlight.opacity(0.85 * flash))
         }
     }
 
@@ -199,11 +199,11 @@ struct SoundNameField: View {
         if model.editingID == item.id {
             TextField("Sound name", text: $draft)
                 .textFieldStyle(.plain)
-                .font(.body.weight(.medium))
+                .font(Theme.rowTitle)
                 .focused($isFocused)
                 .padding(.horizontal, 5)
                 .padding(.vertical, 2)
-                .background(.background, in: RoundedRectangle(cornerRadius: 5, style: .continuous))
+                .background(Theme.background, in: RoundedRectangle(cornerRadius: 5, style: .continuous))
                 .overlay {
                     RoundedRectangle(cornerRadius: 5, style: .continuous)
                         .strokeBorder(.tint, lineWidth: 1.5)
@@ -228,7 +228,7 @@ struct SoundNameField: View {
                 .accessibilityLabel("Name")
         } else {
             Text(item.displayName)
-                .font(.body.weight(.medium))
+                .font(Theme.rowTitle)
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .padding(.vertical, 2)
@@ -287,6 +287,7 @@ struct SoundRowControls: View {
             .help(item.retriggerMode.explanation)
         }
         .padding(.leading, 42)
+        .padding(.top, 2)
     }
 }
 

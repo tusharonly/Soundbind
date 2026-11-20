@@ -73,7 +73,7 @@ struct ShortcutRecorderView: NSViewRepresentable {
             recorder.placeholderAttributedString = NSAttributedString(
                 string: placeholder,
                 attributes: [
-                    .foregroundColor: NSColor.controlAccentColor,
+                    .foregroundColor: Theme.accentNSColor,
                     .font: ShortcutRecorderView.font,
                     .paragraphStyle: paragraph,
                 ]
@@ -92,12 +92,12 @@ struct ShortcutBadge: View {
 
     var body: some View {
         Text(text)
-            .font(.caption.weight(.medium))
+            .font(.caption.weight(.bold))
             .monospacedDigit()
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(.quaternary, in: RoundedRectangle(cornerRadius: 5, style: .continuous))
+            .foregroundStyle(Theme.secondaryInk)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(Theme.surfaceStrong, in: Theme.card(7))
             .accessibilityLabel("Shortcut \(text)")
     }
 }
@@ -115,7 +115,7 @@ struct ShortcutConflictView: View {
                 .foregroundStyle(.yellow)
                 .accessibilityHidden(true)
             Text("\(conflict.shortcut.description) is already used by \(model.name(of: conflict.holder)).")
-                .font(.callout)
+                .font(.callout.weight(.medium))
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 8)
             Button("Cancel") { model.hotkeys.cancelConflict(for: owner) }
@@ -127,7 +127,7 @@ struct ShortcutConflictView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
-        .background(.yellow.opacity(0.14), in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+        .background(.yellow.opacity(0.18), in: Theme.card(11))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Shortcut conflict")
     }
