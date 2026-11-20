@@ -67,6 +67,8 @@ struct MainWindowView: View {
                 } label: {
                     Label("Add Sound", systemImage: "plus")
                 }
+                // Also on the menu command; kept here so ⌘O works without a visible menu bar.
+                .keyboardShortcut("o", modifiers: .command)
                 .help("Add Sound (⌘O)")
             }
         }

@@ -1,0 +1,132 @@
+# Soundbind
+
+A native macOS menu bar app: import audio files, bind each one to a global keyboard shortcut, and play it from anywhere, even with the window closed.
+
+- macOS 14 (Sonoma) or later, SwiftUI-first, sandboxed
+- Global hotkeys via [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts), with no Accessibility permission needed
+- `AVAudioEngine` playback with sounds preloaded into memory
+
+## Build and run
+
+Requirements: Xcode 16.3 or later (KeyboardShortcuts 2.4 needs the Swift 6.1 toolchain; the app itself compiles in Swift 5 mode and was developed with Xcode 27.2) and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+
+```sh
+brew install xcodegen          # once
+xcodegen generate              # creates Soundbind.xcodeproj from project.yml
+xcodebuild -scheme Soundbind build
+xcodebuild -scheme Soundbind test
+```
+
+To run the built app:
+
+```sh
+xcodebuild -scheme Soundbind -derivedDataPath build build
+open build/Build/Products/Debug/Soundbind.app
+```
+
+Or open `Soundbind.xcodeproj` in Xcode and press Run.
+
+`Soundbind.xcodeproj` is generated and not checked in. Re-run `xcodegen generate` after adding or removing files.
+
+### Before you ship
+
+- **Bundle ID is a placeholder:** `com.yourdomain.soundbind` (tests: `com.yourdomain.soundbind.tests`). Change `bundleIdPrefix` and both `PRODUCT_BUNDLE_IDENTIFIER` values in `project.yml`. The library folder name follows the bundle ID.
+- **Signing is ad hoc** (`CODE_SIGN_IDENTITY: "-"`, no team) so it builds on any machine. Set `DEVELOPMENT_TEAM` and a real identity in `project.yml` to distribute.
+- **The app icon is a generated placeholder** (keycap with a waveform). Regenerate with `swift scripts/generate_icon.swift Soundbind/Resources/Assets.xcassets/AppIcon.appiconset`, or replace the PNGs.
+
+## Using it
+
+1. Click the waveform icon in the menu bar and choose **Open Soundbind…** (the window opens by itself on first launch only).
+2. Add sounds with the **+** toolbar button, `⌘O`, or by dragging files onto the window. MP3, WAV, M4A, AAC, AIFF and CAF are accepted.
+3. Click **Click to record shortcut** on a row and press a key combination.
+
+| In the sound list | |
+|---|---|
+| `↑` / `↓` | Move the selection |
+| `Space` | Play or stop the selected sound |
+| `Return` | Rename (or double-click the name) |
+| `Delete` | Delete, with Undo (`⌘Z` or the toast) |
+| `Esc` | Clear the selection |
+| `⌘.` | Stop all sounds |
+
+The speaker button on a row reveals its volume slider and retrigger mode (Restart, Ignore, Overlap). The `…` menu has Rename, Reveal in Finder, Duplicate, Shortcut Enabled, Clear Shortcut and Delete.
+
+Settings (`⌘,`): launch at login, Dock icon, master volume, a global **Stop All Sounds** shortcut, and whether to keep the audio engine running.
+
+## Where things live
+
+```
+project.yml                 XcodeGen project definition
+Soundbind/
+  App/                      Entry point, AppDelegate, AppModel (coordinator + UI state)
+  Models/                   SoundItem, RetriggerMode
+  Services/                 SoundLibrary, AudioEngineService, AudioAnalyzer,
+                            HotkeyService, LaunchAtLoginService, AppSettings
+  Views/                    Small SwiftUI views
+  Support/                  Objective-C exception catcher for AVAudioEngine
+  Resources/                Info.plist, entitlements, asset catalog
+SoundbindTests/             Unit tests
+scripts/generate_icon.swift Icon generator
+```
+
+User data is in the sandbox container, under `~/Library/Containers/<bundle id>/Data/Library/Application Support/<bundle id>/`:
+
+- `library.json`: the single Codable store
+- `Sounds/`: imported audio, copied in and named by UUID
+- `Trash/`: files of deleted sounds, kept until the next launch so delete can be undone
+
+Shortcuts are stored by KeyboardShortcuts in `UserDefaults`.
+
+## Decisions worth knowing about
+
+- **Extra fields on `SoundItem`.** `duration` and `waveform` (40 normalised peaks) are stored alongside the fields in the brief, so rows never reopen the audio file.
+- **Canonical audio format.** Preloaded sounds are converted once to 48 kHz stereo float. Every pooled `AVAudioPlayerNode` is connected in that format up front, so a trigger is only "schedule buffer, play". Up to 24 voices can sound at once; beyond that the oldest is reused.
+- **Long files.** Over 30 s shows a warning. Over 60 s the file is streamed from disk on its own player node rather than preloaded, so it can start slightly later.
+- **Engine idle behaviour.** A running engine keeps the output device open, which stops the Mac from idle-sleeping. By default the engine pauses after 30 s of silence, so the first trigger after a quiet spell pays a small wake-up cost. **Settings > Keep audio engine running** trades that for constant lowest latency.
+- **Shortcut conflicts.** Recording a combo already used by another sound, or by Stop All, rolls the recorder back and shows an inline warning with **Replace** and **Cancel**. System-reserved combos use the recorder's own alert.
+- **Disabled sounds keep their shortcut reserved** but do not respond to it.
+- **Delete and Undo.** A deleted sound's file and shortcut are kept until the next launch. If its shortcut was given to another sound in the meantime, the restored sound comes back without one.
+- **Renaming after import.** Importing one file puts its name straight into edit mode. Importing several selects the last one and shows a toast instead, since picking one of many to rename would be arbitrary.
+- **Search field** appears once there are more than 8 sounds.
+- **Corrupt `library.json`** is renamed to `library.corrupt-<timestamp>.json` and the app starts empty with a notice. Audio files already in `Sounds/` are left on disk but are not re-adopted automatically.
+- **Custom list instead of `List`.** Rows are drawn in a `ScrollView` for control over hover, selection and flash styling and for spring transitions. Drag-to-reorder is not implemented.
+- **AppKit is used in three places:** the recorder (`KeyboardShortcuts.RecorderCocoa`, to customise the placeholder and width), the activation policy for the Dock icon toggle, and the menu bar item tooltip.
+- **KeyboardShortcuts is pinned to 2.4.x** in `project.yml`.
+- **Private notification name.** The recorder placeholder is restored by observing `KeyboardShortcuts_recorderActiveStatusDidChange`, which is internal to KeyboardShortcuts 2.4. If a later version renames it, the placeholder falls back to the library's "Record Shortcut" text; nothing else breaks.
+- **macOS 15+ sandbox limit.** Apple no longer allows sandboxed apps to register Option-only or Option+Shift-only shortcuts. The recorder explains this when you try one.
+- **Launch behaviour on macOS 14.** There is no scene API to keep the window closed at launch before macOS 15, so on 14 the window is closed again right after launch on every run after the first.
+
+## Tests
+
+49 unit tests, run with `xcodebuild -scheme Soundbind test`:
+
+- `SoundLibraryTests`: import (copy, UUID naming, survives the original being deleted), unsupported and corrupt files (including cleanup of the copy), delete and restore, persistence round trip, debounced save, missing store, corrupt JSON, missing sound files and relocate, duplicate.
+- `HotkeyServiceTests`: conflict detection (other sounds, self, Stop All, deleted sounds), the record, roll back, Replace and Cancel flow, single registration across repeated syncs, unregistering on delete, disabled sounds, restore after undo.
+- `AudioEngineServiceTests`: real `AVAudioEngine` playback at zero volume, covering preload, natural finish, Restart, Ignore, Overlap, voice pool cap, Stop All and streaming of a 61 s file. Skipped automatically when there is no output device.
+- `AudioAnalyzerTests`: duration, waveform, resampling to the canonical format.
+
+## What was and wasn't verified
+
+Verified from the command line:
+
+- `xcodebuild -scheme Soundbind build` and `test` succeed with no warnings from the app's own code.
+- The app launches and stays running. On first launch a 520×640 window is created; on the next launch no window is created. Window frame autosave and `library.json` are written on quit. A relaunch with a seeded library (including one missing file) runs without crashing.
+- The main window (empty, populated, selected, expanded, conflict, missing file, rename, playing, toast, drop overlay, light and dark), the menu bar popover and Settings were rendered offscreen to images and checked by eye for layout.
+
+**Not verified, because no interactive GUI session or screen capture was available.** Please try these by hand:
+
+1. **Global hotkeys end to end:** recording a shortcut in the real recorder and triggering it from another app with the window closed. The registration logic is tested against a fake backend only.
+2. **Row flash and menu bar icon pulse** when a hotkey fires. The menu bar label swaps `waveform` for `waveform.circle.fill` for about half a second; whether the status item redraws it promptly is untested.
+3. **Drag and drop** from Finder, including several files at once and the drop highlight.
+4. **File picker flows:** toolbar button, `⌘O` (including while the app has no Dock icon), and Relocate.
+5. **Keyboard navigation and focus:** arrows, Space, Return, Delete, Esc, Tab order, and the name field taking focus with its text selected right after an import.
+6. **Undo and redo** through `⌘Z` / `⇧⌘Z` and the toast's Undo button.
+7. **Recorder alerts** for system-reserved shortcuts, and the accent-coloured placeholder returning after a recording is cancelled.
+8. **Audio route changes:** unplugging headphones or switching output device during playback. The handler resets voices and restarts the engine, and engine calls are wrapped so an Objective-C exception cannot crash the app, but none of this was exercised with real hardware changes.
+9. **Launch at login** (`SMAppService`), including the "requires approval" state. It generally needs a properly signed app in `/Applications`.
+10. **Show Dock icon** toggle, and reopening the window by clicking the Dock icon.
+11. **Menu bar popover behaviour:** dismissal when opening the main window or Settings, the tooltip, and template rendering on light and dark menu bars.
+12. **Animations, Reduce Motion, VoiceOver and larger text sizes.** Labels and reduced-motion paths are in the code but were not experienced with the real assistive features on.
+13. **Search field** appearing past 8 sounds. Adding the ninth sound rebuilds the window content once, which may briefly drop keyboard focus.
+14. **Anything on macOS 14 or 15.** Everything was built and run on macOS 27.2 only, including the macOS 14 window-closing fallback.
+15. **MP3, M4A, AAC, AIFF and CAF with real-world files.** Tests use generated WAV and CAF tones.
