@@ -103,6 +103,13 @@ final class AudioEngineService {
     // MARK: - Playback
 
     func isPlaying(_ id: UUID) -> Bool { playback[id] != nil }
+    /// Number of simultaneously sounding copies of a sound (more than one only in Overlap mode).
+    func voiceCount(for id: UUID) -> Int { voices.filter { $0.soundID == id }.count }
+
+    var hasOutputDevice: Bool {
+        let output = engine.outputNode.outputFormat(forBus: 0)
+        return output.channelCount > 0 && output.sampleRate > 0
+    }
     var isAnythingPlaying: Bool { !playback.isEmpty }
 
     /// Plays a sound, honouring its retrigger mode. Returns whether a new voice started.
@@ -274,8 +281,7 @@ final class AudioEngineService {
         if engine.isRunning { return true }
 
         // With no output device the engine raises instead of throwing; don't even try.
-        let output = engine.outputNode.outputFormat(forBus: 0)
-        guard output.channelCount > 0, output.sampleRate > 0 else {
+        guard hasOutputDevice else {
             log.error("No usable audio output device")
             return false
         }

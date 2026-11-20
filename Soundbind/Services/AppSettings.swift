@@ -34,7 +34,7 @@ final class AppSettings {
         didSet { defaults.set(hasSeenHint, forKey: Key.hasSeenHint) }
     }
 
-    init(defaults: UserDefaults = .standard, recordLaunch: Bool = true) {
+    init(defaults: UserDefaults = .standard, recordLaunch: Bool = !AppEnvironment.isRunningTests) {
         self.defaults = defaults
         isFirstLaunch = !defaults.bool(forKey: Key.hasLaunchedBefore)
         masterVolume = defaults.object(forKey: Key.masterVolume) as? Float ?? 1
