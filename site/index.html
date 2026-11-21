@@ -274,17 +274,9 @@
   }
   .copy:hover { background: #F5C2FE; }
   .get-meta { margin-top: 26px; color: var(--muted); font-weight: 600; font-size: 15px; }
-  .pill.alt { margin-top: 22px; font-size: 16px; }
-  .pill.alt svg { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-  .gate { margin-top: 26px; max-width: 560px; font-size: 16px; }
-  .gate summary { cursor: pointer; font-weight: 700; color: var(--ink); padding: 8px 12px; border-radius: 10px; display: inline-block; }
-  .gate summary:hover { background: var(--chip); }
-  .gate p { margin-top: 10px; color: var(--muted); font-weight: 500; }
-  .gate code {
-    display: block; margin-top: 14px; padding: 14px 16px; border-radius: 12px; text-align: left;
-    background: var(--ink); color: var(--cream); overflow-x: auto; white-space: nowrap;
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px;
-  }
+  .get-meta.then { margin-top: 8px; }
+  .get-meta code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em; background: var(--chip); padding: 2px 7px; border-radius: 6px; color: var(--ink); }
+
 
   /* ---------- Footer ---------- */
   footer { text-align: center; overflow: hidden; }
@@ -420,12 +412,7 @@
       <button class="copy" type="button" data-copy="brew-command">Copy</button>
     </div>
     <p class="get-meta">Needs <a href="https://brew.sh">Homebrew</a>. Works on macOS 14 or later, Apple silicon and Intel.</p>
-    <a class="pill filled alt" href="https://github.com/tusharonly/Soundbind/releases/download/v0.0.1/Soundbind-0.0.1.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Or download the disk image</a>
-    <details class="gate">
-      <summary>Downloaded it and macOS will not open it?</summary>
-      <p>Soundbind is not notarized by Apple yet, so a downloaded copy is blocked with “Apple could not verify Soundbind”. Click Done, then go to System Settings, Privacy &amp; Security, and click Open Anyway. Installing with Homebrew avoids this. Or run this once in Terminal:</p>
-      <code>xattr -dr com.apple.quarantine /Applications/Soundbind.app</code>
-    </details>
+    <p class="get-meta then">Then run <code>open -a Soundbind</code> and look for its icon in the menu bar.</p>
   </section>
 </main>
 
