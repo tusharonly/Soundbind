@@ -45,18 +45,19 @@ The look is defined in `Soundbind/Views/Theme.swift`: a warm cream background, n
 - **Corrupt `library.json`** is renamed to `library.corrupt-<timestamp>.json` and the app starts empty with a notice. Audio files already in `Sounds/` are left on disk but are not re-adopted automatically.
 - **Custom list instead of `List`.** Rows are drawn in a `ScrollView` for control over hover, selection and flash styling and for spring transitions. Drag-to-reorder is not implemented.
 - **AppKit is used in a few places:** the recorder (`KeyboardShortcuts.RecorderCocoa`, to customise the placeholder and width), the activation policy for the Dock icon toggle, the menu bar glyph and its tooltip, and reopening the main window when the app is launched while already running.
-- **KeyboardShortcuts is pinned to 2.4.x** in `project.yml`.
-- **Private notification name.** The recorder placeholder is restored by observing `KeyboardShortcuts_recorderActiveStatusDidChange`, which is internal to KeyboardShortcuts 2.4. If a later version renames it, the placeholder falls back to the library's "Record Shortcut" text; nothing else breaks.
+- **KeyboardShortcuts is pinned to 3.1.x** in `project.yml`. Version 2.4 had a recorder bug on macOS 26 and later: clicking the recorder focused it without starting a recording, so the first key combination was ignored. `RecorderClickTests` guards against it coming back.
+- **Private notification name.** The recorder placeholder is restored by observing `KeyboardShortcuts_recorderActiveStatusDidChange`, which is internal to KeyboardShortcuts. If a later version renames it, the placeholder falls back to the library's "Record Shortcut" text; nothing else breaks.
 - **macOS 15+ sandbox limit.** Apple no longer allows sandboxed apps to register Option-only or Option+Shift-only shortcuts. The recorder explains this when you try one.
 - **Launch behaviour on macOS 14.** There is no scene API to keep the window closed at launch before macOS 15, so on 14 the window is closed again right after launch on every run after the first.
 
 ## Tests
 
-49 unit tests, run with `xcodebuild -scheme Soundbind test`:
+50 unit tests, run with `xcodebuild -scheme Soundbind test`:
 
 - `SoundLibraryTests`: import (copy, UUID naming, survives the original being deleted), unsupported and corrupt files (including cleanup of the copy), delete and restore, persistence round trip, debounced save, missing store, corrupt JSON, missing sound files and relocate, duplicate.
 - `HotkeyServiceTests`: conflict detection (other sounds, self, Stop All, deleted sounds), the record, roll back, Replace and Cancel flow, single registration across repeated syncs, unregistering on delete, disabled sounds, restore after undo.
 - `AudioEngineServiceTests`: real `AVAudioEngine` playback at zero volume, covering preload, natural finish, Restart, Ignore, Overlap, voice pool cap, Stop All and streaming of a 61 s file. Skipped automatically when there is no output device.
+- `RecorderClickTests`: clicks the real shortcut recorder in a real window and presses a key combination, checking that it is recorded. Skipped when the test window cannot become key.
 - `AudioAnalyzerTests`: duration, waveform, resampling to the canonical format.
 
 Anything that needs a real GUI session, real audio hardware or assistive features is listed in [docs/manual-testing.md](manual-testing.md).

@@ -70,7 +70,7 @@ Requires [Homebrew](https://brew.sh) and macOS 14 or later, on Apple silicon or 
 <details>
 <summary><b>Build from source instead</b></summary>
 
-You need Xcode 16.3 or later and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+You need Xcode 26 or later and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```sh
 brew install xcodegen

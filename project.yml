@@ -8,7 +8,7 @@ options:
 packages:
   KeyboardShortcuts:
     url: https://github.com/sindresorhus/KeyboardShortcuts
-    minorVersion: 2.4.0
+    minorVersion: 3.1.0
 settings:
   base:
     SWIFT_VERSION: "5.0"
