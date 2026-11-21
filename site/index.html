@@ -260,7 +260,22 @@
 
   /* ---------- Download ---------- */
   .get { display: flex; flex-direction: column; align-items: center; text-align: center; padding-block: clamp(64px, 8vw, 104px) clamp(48px, 6vw, 72px); }
-  .get-meta { margin-top: 30px; color: var(--muted); font-weight: 600; font-size: 15px; }
+  .get h2 { font-weight: 800; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1; letter-spacing: -0.04em; font-variation-settings: "opsz" 96; }
+  .brew {
+    display: flex; align-items: center; gap: 10px; max-width: 100%;
+    margin-top: clamp(24px, 3vw, 36px); padding: 10px 10px 10px 22px; border-radius: 18px;
+    background: var(--ink); color: var(--cream);
+    box-shadow: 0 6px 0 var(--ink-deep), 0 18px 28px -10px rgba(41, 37, 36, 0.45);
+  }
+  .brew code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: clamp(13px, 1.5vw, 16px); white-space: nowrap; overflow-x: auto; padding-block: 8px; }
+  .copy {
+    flex: none; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer;
+    background: var(--fuchsia); color: var(--ink); border: 0; border-radius: 11px; padding: 10px 16px; min-width: 76px;
+  }
+  .copy:hover { background: #F5C2FE; }
+  .get-meta { margin-top: 26px; color: var(--muted); font-weight: 600; font-size: 15px; }
+  .pill.alt { margin-top: 22px; font-size: 16px; }
+  .pill.alt svg { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
   .gate { margin-top: 26px; max-width: 560px; font-size: 16px; }
   .gate summary { cursor: pointer; font-weight: 700; color: var(--ink); padding: 8px 12px; border-radius: 10px; display: inline-block; }
   .gate summary:hover { background: var(--chip); }
@@ -316,7 +331,7 @@
   <nav aria-label="Main">
     <a class="pill hide-small" href="https://github.com/tusharonly/Soundbind"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.33.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>GitHub</a>
     <a class="pill hide-small" href="https://github.com/tusharonly/Soundbind/releases">Releases</a>
-    <a class="pill filled" href="#download">Download</a>
+    <a class="pill filled" href="#download">Install</a>
   </nav>
 </header>
 
@@ -324,7 +339,7 @@
   <section class="hero">
     <h1><span>Drop in a <mark>sound</mark>.</span><span>Bind a key. Done.</span></h1>
     <div class="hero-row">
-      <a class="button" href="https://github.com/tusharonly/Soundbind/releases/download/v0.0.1/Soundbind-0.0.1.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Download for Mac</a>
+      <a class="button" href="#download"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Get Soundbind for Mac</a>
       <a class="pill filled" href="https://github.com/tusharonly/Soundbind"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.33.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>Source on GitHub</a>
       <div class="facts">
         <span><small>Price</small>Free</span>
@@ -399,11 +414,16 @@
   </section>
 
   <section class="get" id="download">
-    <a class="button" href="https://github.com/tusharonly/Soundbind/releases/download/v0.0.1/Soundbind-0.0.1.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Download for Mac</a>
-    <p class="get-meta">Version 0.0.1 for macOS 14 or later, Apple silicon and Intel</p>
+    <h2>Install it in one line</h2>
+    <div class="brew">
+      <code id="brew-command">brew install --cask tusharonly/soundbind/soundbind</code>
+      <button class="copy" type="button" data-copy="brew-command">Copy</button>
+    </div>
+    <p class="get-meta">Needs <a href="https://brew.sh">Homebrew</a>. Works on macOS 14 or later, Apple silicon and Intel.</p>
+    <a class="pill filled alt" href="https://github.com/tusharonly/Soundbind/releases/download/v0.0.1/Soundbind-0.0.1.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Or download the disk image</a>
     <details class="gate">
-      <summary>macOS blocked it on first launch?</summary>
-      <p>Soundbind is not notarized by Apple yet. Try to open it once, then go to System Settings, Privacy &amp; Security, and click Open Anyway. Or run this once in Terminal:</p>
+      <summary>Downloaded it and macOS will not open it?</summary>
+      <p>Soundbind is not notarized by Apple yet, so a downloaded copy is blocked with “Apple could not verify Soundbind”. Click Done, then go to System Settings, Privacy &amp; Security, and click Open Anyway. Installing with Homebrew avoids this. Or run this once in Terminal:</p>
       <code>xattr -dr com.apple.quarantine /Applications/Soundbind.app</code>
     </details>
   </section>
@@ -531,6 +551,15 @@
 
   const stopEverything = () => keys.forEach((_, index) => stop(index));
   stopAll.addEventListener("click", stopEverything);
+
+  for (const button of document.querySelectorAll(".copy")) {
+    button.addEventListener("click", async () => {
+      const text = document.getElementById(button.dataset.copy).textContent;
+      try { await navigator.clipboard.writeText(text); } catch (error) { return; }
+      button.textContent = "Copied";
+      setTimeout(() => { button.textContent = "Copy"; }, 1600);
+    });
+  }
 
   const showVolume = () => volume.style.setProperty("--fill", `${volume.value}%`);
   volume.addEventListener("input", () => {

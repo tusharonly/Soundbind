@@ -59,14 +59,18 @@
 
 ## Install
 
-1. Download **[Soundbind-0.0.1.dmg](https://github.com/tusharonly/Soundbind/releases/latest)** from the latest release.
-2. Open it and drag **Soundbind** into **Applications**.
-3. Open Soundbind, then click the key-and-sound-waves icon in the menu bar and choose **Open Soundbind…**.
+**With Homebrew (recommended):**
 
-Requires macOS 14 or later, on Apple silicon or Intel.
+```sh
+brew install --cask tusharonly/soundbind/soundbind
+```
+
+Then run `open -a Soundbind`, click the key-and-sound-waves icon in the menu bar and choose **Open Soundbind…**. Requires macOS 14 or later, on Apple silicon or Intel.
+
+**Or download the disk image:** get **[Soundbind-0.0.1.dmg](https://github.com/tusharonly/Soundbind/releases/latest)** from the latest release, open it and drag **Soundbind** into **Applications**.
 
 > [!IMPORTANT]
-> Soundbind is not yet notarized by Apple, so macOS blocks it the first time. After trying to open it once, go to **System Settings > Privacy & Security**, scroll down and click **Open Anyway**. Or run this once in Terminal:
+> Soundbind is not yet notarized by Apple. Homebrew handles this for you. If you install from the disk image, macOS blocks the first launch with "Apple could not verify Soundbind": click **Done**, go to **System Settings > Privacy & Security**, scroll down and click **Open Anyway**. Or run this once in Terminal:
 >
 > ```sh
 > xattr -dr com.apple.quarantine /Applications/Soundbind.app
