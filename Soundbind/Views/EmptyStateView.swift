@@ -4,17 +4,18 @@ struct EmptyStateView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Keycap tile, echoing the app icon.
-            Image(systemName: "waveform")
-                .font(.system(size: 26, weight: .bold))
-                .foregroundStyle(Theme.onInk)
-                .frame(width: 56, height: 56)
-                .background(Theme.ink, in: Theme.card(16))
+        VStack(alignment: .center, spacing: 0) {
+            // The app icon itself, so the in-app logo can never drift from it.
+            // The artwork has a built-in margin; the negative padding lines its tile up with the text.
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 72, height: 72)
+                .padding(-7)
                 .accessibilityHidden(true)
                 .padding(.bottom, 28)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .center, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
                     Text("Drop in a ")
                     MarkedText(text: "sound")
@@ -33,6 +34,7 @@ struct EmptyStateView: View {
             Text("Play any audio file from anywhere with a global shortcut.")
                 .font(.title3.weight(.medium))
                 .foregroundStyle(Theme.secondaryInk)
+                .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 14)
 
@@ -57,6 +59,6 @@ struct EmptyStateView: View {
             .padding(.top, 34)
         }
         .padding(40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }

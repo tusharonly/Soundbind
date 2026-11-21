@@ -3,11 +3,18 @@ import SwiftUI
 /// Template image for the menu bar; briefly switches variant when a hotkey fires.
 struct MenuBarLabel: View {
     let model: AppModel
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        Image(systemName: model.isMenuBarPulsing ? "waveform.circle.fill" : "waveform")
+        Image(nsImage: model.isMenuBarPulsing ? MenuBarIcon.active : MenuBarIcon.idle)
             .accessibilityLabel("Soundbind")
             .help("Soundbind")
+            // The label is the one view that is always alive, so it handles "reopen"
+            // (launching the app while it is already running) by showing the main window.
+            .onReceive(NotificationCenter.default.publisher(for: AppDelegate.reopenRequested)) { _ in
+                openWindow(id: AppModel.mainWindowID)
+                NSApp.activate(ignoringOtherApps: true)
+            }
     }
 }
 
@@ -84,9 +91,18 @@ struct MenuBarPopoverView: View {
     /// Title plus master volume, always one click away.
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Soundbind")
-                .font(.title3.weight(.bold))
-                .tracking(-0.3)
+            HStack(spacing: 7) {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .interpolation(.high)
+                    .frame(width: 26, height: 26)
+                    .padding(-3)
+                    .accessibilityHidden(true)
+                Text("Soundbind")
+                    .font(.title3.weight(.bold))
+                    .tracking(-0.3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
             VStack(spacing: 6) {
                 SectionLabel(title: "Volume")
                 Slider(

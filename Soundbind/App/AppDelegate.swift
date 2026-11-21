@@ -1,6 +1,8 @@
 import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    static let reopenRequested = Notification.Name("SoundbindReopenRequested")
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard !AppEnvironment.isRunningTests else { return }
         let model = AppModel.shared
@@ -21,6 +23,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         guard !AppEnvironment.isRunningTests else { return }
         AppModel.shared.prepareForTermination()
+    }
+
+    /// Launching the app again while it runs (Finder, Spotlight, `open`) shows the main window.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        NotificationCenter.default.post(name: Self.reopenRequested, object: nil)
+        return false
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
