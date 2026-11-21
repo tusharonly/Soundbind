@@ -81,7 +81,7 @@ xcodebuild -scheme Soundbind -derivedDataPath build build
 open build/Build/Products/Debug/Soundbind.app
 ```
 
-`scripts/make_dmg.sh` builds the disk image that the Homebrew cask installs from.
+`scripts/make_release.sh` builds the zip that the Homebrew cask installs from.
 
 </details>
 
