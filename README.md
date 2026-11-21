@@ -3,12 +3,13 @@
   <h1>Soundbind</h1>
   <h3>Drop in a sound. Bind a key. Done.</h3>
   <p>A tiny native macOS menu bar soundboard.<br>Play any audio file from anywhere with a global keyboard shortcut.</p>
+  <p><a href="https://soundbind.vercel.app"><b>soundbind.vercel.app</b></a></p>
 
   ![Platform](https://img.shields.io/badge/macOS-14%2B-292524?style=flat-square&logo=apple&logoColor=white)
   ![SwiftUI](https://img.shields.io/badge/SwiftUI-native-D946EF?style=flat-square&logo=swift&logoColor=white)
   [![License](https://img.shields.io/badge/license-MIT-00786F?style=flat-square)](LICENSE)
 
-  <p><a href="#install"><b>Install</b></a> · <a href="#how-it-works">How it works</a> · <a href="#why-soundbind">Why Soundbind</a> · <a href="#contributing">Contributing</a></p>
+  <p><a href="https://soundbind.vercel.app"><b>Website</b></a> · <a href="#install"><b>Install</b></a> · <a href="#how-it-works">How it works</a> · <a href="#why-soundbind">Why Soundbind</a> · <a href="#contributing">Contributing</a></p>
 
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/main-dark.png">
