@@ -3,13 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Soundbind: a menu bar soundboard for Mac</title>
-<meta name="description" content="Soundbind is a tiny Mac menu bar soundboard. Drop in a sound, bind a key, and play it from any app. Free and open source.">
-<meta property="og:title" content="Soundbind">
-<meta property="og:description" content="Drop in a sound. Bind a key. Done. A tiny Mac menu bar soundboard, free and open source.">
-<meta property="og:image" content="https://soundbind.vercel.app/images/icon.png">
-<meta property="og:url" content="https://soundbind.vercel.app/">
+<title>Soundbind: free soundboard for Mac with global keyboard shortcuts</title>
+<meta name="description" content="Soundbind is a free, open source soundboard for Mac. It lives in the menu bar: add audio files, bind each to a global keyboard shortcut, and play it from any app.">
 <link rel="canonical" href="https://soundbind.vercel.app/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#F0ABFC">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Soundbind">
+<meta property="og:title" content="Soundbind: a free menu bar soundboard for Mac">
+<meta property="og:description" content="Drop in a sound. Bind a key. Done. Play any audio file from any app with a global keyboard shortcut. Free and open source.">
+<meta property="og:url" content="https://soundbind.vercel.app/">
+<meta property="og:image" content="https://soundbind.vercel.app/images/social-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Soundbind: Drop in a sound. Bind a key. Done. A free menu bar soundboard for Mac.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Soundbind: a free menu bar soundboard for Mac">
+<meta name="twitter:description" content="Drop in a sound. Bind a key. Done. Play any audio file from any app with a global keyboard shortcut.">
+<meta name="twitter:image" content="https://soundbind.vercel.app/images/social-card.jpg">
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Soundbind",
+  "description": "A free, open source menu bar soundboard for Mac. Add audio files, bind each one to a global keyboard shortcut, and play it from any app.",
+  "url": "https://soundbind.vercel.app/",
+  "image": "https://soundbind.vercel.app/images/social-card.jpg",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "macOS 14 or later",
+  "softwareVersion": "0.0.1",
+  "downloadUrl": "https://github.com/tusharonly/Soundbind/releases/latest",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": {
+   "@type": "Offer",
+   "price": "0",
+   "priceCurrency": "USD"
+  },
+  "author": {
+   "@type": "Person",
+   "name": "Tushar Ghige",
+   "url": "https://github.com/tusharonly"
+  }
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+   {
+    "@type": "Question",
+    "name": "What is Soundbind?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Soundbind is a free, open source soundboard app for Mac. It lives in the menu bar: you add audio files, give each one a global keyboard shortcut, and press that shortcut in any app to play the sound."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Do the shortcuts work while I am in another app?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. The shortcuts are global hotkeys, so they work in a game, a browser, a presentation or a call, even when the Soundbind window is closed."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Can people on a Zoom or Discord call hear the sounds?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Soundbind plays through your Mac's speakers or headphones. People on a call hear it only if your microphone picks it up, or if you route your Mac's audio into the call with a tool such as BlackHole or Loopback. Soundbind does not act as a virtual microphone."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Does it need Accessibility permission?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "No. Soundbind registers its keyboard shortcuts without Accessibility access, runs in the macOS sandbox, and never connects to the network."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Which audio formats can I use?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "MP3, WAV, M4A, AAC, AIFF and CAF. Sounds are loaded into memory so they play the instant you press the key, and up to 24 can play at once."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Is Soundbind really free?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. It is free and open source under the MIT License, with no account, no ads and no analytics. The source code is on GitHub."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Which Macs does it run on?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Any Mac running macOS 14 Sonoma or later, on Apple silicon or Intel."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "How do I install or remove it?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Install it with Homebrew by running brew install --cask tusharonly/soundbind/soundbind in Terminal. To remove it, run brew uninstall --cask soundbind."
+    }
+   }
+  ]
+ }
+]
+</script>
+<link rel="apple-touch-icon" href="images/icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +131,7 @@
     --cream: #FFF7ED;
     --ink: #292524;
     --ink-deep: #0C0A09;
-    --muted: #857B74;
+    --muted: #675E58;
     --chip: rgba(41, 37, 36, 0.06);
     --gutter: clamp(16px, 4vw, 32px);
   }
@@ -93,10 +203,12 @@
     color: inherit; background: linear-gradient(transparent 42%, var(--fuchsia) 42%, var(--fuchsia) 94%, transparent 94%);
     padding-inline: 0.04em; margin-inline: -0.04em;
   }
+  .lede { max-width: 34em; margin: clamp(20px, 3vw, 30px) auto 0; font-size: clamp(1.1rem, 1.7vw, 1.35rem); font-weight: 500; line-height: 1.4; color: var(--muted); text-wrap: balance; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .hero-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 26px; margin-top: clamp(28px, 4vw, 48px); }
   .hero-row .pill { padding-block: 17px; }
   .facts { display: flex; justify-content: center; gap: 26px; color: var(--muted); font-weight: 700; font-size: 17px; line-height: 1.15; text-align: left; }
-  .facts small { display: block; font-size: 13px; font-weight: 600; opacity: 0.8; }
+  .facts small { display: block; font-size: 13px; font-weight: 600; }
 
   /* ---------- Stage: a pretend desktop you can play ---------- */
   .stage-wrap { margin-top: clamp(40px, 7vw, 84px); }
@@ -258,6 +370,15 @@
   .window img { width: 100%; height: auto; }
   .window p { color: var(--muted); font-weight: 600; font-size: 16px; max-width: 46ch; margin: -6px auto 0; }
 
+  /* ---------- Questions ---------- */
+  .faq { max-width: 1040px; margin: clamp(72px, 9vw, 120px) auto 0; }
+  .faq h2 { font-weight: 800; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1; letter-spacing: -0.04em; font-variation-settings: "opsz" 96; text-align: center; }
+  .faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(28px, 5vw, 64px); margin-top: clamp(28px, 4vw, 48px); }
+  .qa { padding-block: 22px; border-top: 2px solid rgba(41, 37, 36, 0.12); }
+  .qa h3 { font-weight: 700; font-size: 1.2rem; line-height: 1.2; letter-spacing: -0.02em; }
+  .qa p { margin-top: 8px; color: var(--muted); font-weight: 500; font-size: 1rem; line-height: 1.5; }
+  .qa code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em; background: var(--chip); padding: 2px 6px; border-radius: 6px; color: var(--ink); overflow-wrap: anywhere; }
+
   /* ---------- Download ---------- */
   .get { display: flex; flex-direction: column; align-items: center; text-align: center; padding-block: clamp(64px, 8vw, 104px) clamp(48px, 6vw, 72px); }
   .get h2 { font-weight: 800; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1; letter-spacing: -0.04em; font-variation-settings: "opsz" 96; }
@@ -298,6 +419,7 @@
     .hint { margin-top: 84px; }
     .menubar .menus { display: none; }
     .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .faq-list { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 620px) {
     body { font-size: 17px; }
@@ -330,6 +452,7 @@
 <main id="top">
   <section class="hero">
     <h1><span>Drop in a <mark>sound</mark>.</span><span>Bind a key. Done.</span></h1>
+    <p class="lede">Soundbind is a free soundboard for Mac that lives in the menu bar. Give any audio file a global keyboard shortcut and play it from any app.</p>
     <div class="hero-row">
       <a class="button" href="#download"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10"/><path d="m5.5 9 4.5 4.5L14.5 9"/><path d="M4 17h12"/></svg>Get Soundbind for Mac</a>
       <a class="pill filled" href="https://github.com/tusharonly/Soundbind"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.33.66.07-.52.28-.87.5-1.07-1.77-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>Source on GitHub</a>
@@ -341,7 +464,8 @@
     </div>
   </section>
 
-  <section class="stage-wrap" aria-label="Try it">
+  <section class="stage-wrap" aria-labelledby="try-heading">
+    <h2 class="visually-hidden" id="try-heading">Try the soundboard</h2>
     <div class="stage">
       <div class="rings" aria-hidden="true"><svg viewBox="0 0 1000 1000"><circle cx="0" cy="1000" r="300"/><circle cx="0" cy="1000" r="480"/><circle cx="0" cy="1000" r="660"/><circle cx="0" cy="1000" r="840"/></svg></div>
 
@@ -355,12 +479,12 @@
       </div>
 
       <div class="keys" role="group" aria-label="Keys 1 to 6">
-          <button class="key" type="button" data-sound="air-horn" data-gain="1.5" aria-label="Play Air Horn"><span class="key-top"><span class="key-num">1</span><span class="key-led"></span><span class="key-name">Air Horn</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
-          <button class="key" type="button" data-sound="rimshot" data-gain="0.85" aria-label="Play Rimshot"><span class="key-top"><span class="key-num">2</span><span class="key-led"></span><span class="key-name">Rimshot</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
-          <button class="key" type="button" data-sound="sad-trombone" data-gain="0.85" aria-label="Play Sad Trombone"><span class="key-top"><span class="key-num">3</span><span class="key-led"></span><span class="key-name">Sad Trombone</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
-          <button class="key" type="button" data-sound="applause" data-gain="0.9" aria-label="Play Applause"><span class="key-top"><span class="key-num">4</span><span class="key-led"></span><span class="key-name">Applause</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
-          <button class="key" type="button" data-sound="drum-roll" data-gain="0.9" aria-label="Play Drum Roll"><span class="key-top"><span class="key-num">5</span><span class="key-led"></span><span class="key-name">Drum Roll</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
-          <button class="key" type="button" data-sound="ta-da" data-gain="2.4" aria-label="Play Ta-da"><span class="key-top"><span class="key-num">6</span><span class="key-led"></span><span class="key-name">Ta-da</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="air-horn" data-gain="1.5"><span class="key-top"><span class="key-num">1</span><span class="key-led"></span><span class="key-name">Air Horn</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="rimshot" data-gain="0.85"><span class="key-top"><span class="key-num">2</span><span class="key-led"></span><span class="key-name">Rimshot</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="sad-trombone" data-gain="0.85"><span class="key-top"><span class="key-num">3</span><span class="key-led"></span><span class="key-name">Sad Trombone</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="applause" data-gain="0.9"><span class="key-top"><span class="key-num">4</span><span class="key-led"></span><span class="key-name">Applause</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="drum-roll" data-gain="0.9"><span class="key-top"><span class="key-num">5</span><span class="key-led"></span><span class="key-name">Drum Roll</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
+          <button class="key" type="button" data-sound="ta-da" data-gain="2.4"><span class="key-top"><span class="key-num">6</span><span class="key-led"></span><span class="key-name">Ta-da</span></span><svg class="waves" viewBox="0 0 50 50" aria-hidden="true"><path d="M2 32 A16 16 0 0 1 18 48"/><path d="M2 18 A30 30 0 0 1 32 48"/><path d="M2 4 A44 44 0 0 1 46 48"/></svg></button>
       </div>
 
       <div class="panel">
@@ -387,7 +511,8 @@
     <p class="hint">Psst… press <kbd>1</kbd> to <kbd>6</kbd> on your keyboard</p>
   </section>
 
-  <section aria-label="Features">
+  <section aria-labelledby="features-heading">
+    <h2 class="visually-hidden" id="features-heading">What Soundbind does</h2>
     <ul class="features">
         <li><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="6" width="36" height="36" rx="9"/><rect x="14" y="13" width="20" height="18" rx="4"/></svg><h3>Global<br>shortcuts</h3></li>
         <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5 40 11v12c0 10-7 17-16 20C15 40 8 33 8 23V11Z"/><path d="m17 24 5 5 9-10"/></svg><h3>No permissions<br>needed</h3></li>
@@ -400,9 +525,48 @@
     </ul>
   </section>
 
-  <section class="window">
-    <img src="images/main-light.png" width="1296" height="1480" alt="The Soundbind window listing six sounds, each with a waveform, a keyboard shortcut and a volume control.">
+  <section class="window" aria-labelledby="window-heading">
+    <h2 class="visually-hidden" id="window-heading">The Soundbind window</h2>
+    <img src="images/main-light.png" width="1296" height="1480" loading="lazy" decoding="async" alt="The Soundbind window listing six sounds, each with a waveform, a keyboard shortcut and a volume control.">
     <p>The keys above only work on this page. In the app, your shortcuts work in every app, even with this window closed.</p>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">Questions people ask</h2>
+    <div class="faq-list">
+      <div class="qa">
+        <h3>What is Soundbind?</h3>
+        <p>Soundbind is a free, open source soundboard app for Mac. It lives in the menu bar: you add audio files, give each one a global keyboard shortcut, and press that shortcut in any app to play the sound.</p>
+      </div>
+      <div class="qa">
+        <h3>Do the shortcuts work while I am in another app?</h3>
+        <p>Yes. The shortcuts are global hotkeys, so they work in a game, a browser, a presentation or a call, even when the Soundbind window is closed.</p>
+      </div>
+      <div class="qa">
+        <h3>Can people on a Zoom or Discord call hear the sounds?</h3>
+        <p>Soundbind plays through your Mac's speakers or headphones. People on a call hear it only if your microphone picks it up, or if you route your Mac's audio into the call with a tool such as BlackHole or Loopback. Soundbind does not act as a virtual microphone.</p>
+      </div>
+      <div class="qa">
+        <h3>Does it need Accessibility permission?</h3>
+        <p>No. Soundbind registers its keyboard shortcuts without Accessibility access, runs in the macOS sandbox, and never connects to the network.</p>
+      </div>
+      <div class="qa">
+        <h3>Which audio formats can I use?</h3>
+        <p>MP3, WAV, M4A, AAC, AIFF and CAF. Sounds are loaded into memory so they play the instant you press the key, and up to 24 can play at once.</p>
+      </div>
+      <div class="qa">
+        <h3>Is Soundbind really free?</h3>
+        <p>Yes. It is free and open source under the MIT License, with no account, no ads and no analytics. The <a href="https://github.com/tusharonly/Soundbind">source code is on GitHub</a>.</p>
+      </div>
+      <div class="qa">
+        <h3>Which Macs does it run on?</h3>
+        <p>Any Mac running macOS 14 Sonoma or later, on Apple silicon or Intel.</p>
+      </div>
+      <div class="qa">
+        <h3>How do I install or remove it?</h3>
+        <p>Install it with Homebrew by running <code>brew install --cask tusharonly/soundbind/soundbind</code> in Terminal. To remove it, run <code>brew uninstall --cask soundbind</code>.</p>
+      </div>
+    </div>
   </section>
 
   <section class="get" id="download">
