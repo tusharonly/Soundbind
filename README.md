@@ -8,6 +8,7 @@
   ![Platform](https://img.shields.io/badge/macOS-14%2B-292524?style=flat-square&logo=apple&logoColor=white)
   ![SwiftUI](https://img.shields.io/badge/SwiftUI-native-D946EF?style=flat-square&logo=swift&logoColor=white)
   [![License](https://img.shields.io/badge/license-MIT-00786F?style=flat-square)](LICENSE)
+  [![Downloads](https://img.shields.io/github/downloads/tusharonly/Soundbind/total?style=flat-square&label=downloads&color=D946EF)](https://github.com/tusharonly/Soundbind/releases)
 
   <p><a href="https://soundbind.vercel.app"><b>Website</b></a> · <a href="#install"><b>Install</b></a> · <a href="#how-it-works">How it works</a> · <a href="#why-soundbind">Why Soundbind</a> · <a href="#contributing">Contributing</a></p>
 
