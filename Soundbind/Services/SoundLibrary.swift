@@ -51,7 +51,7 @@ final class SoundLibrary {
     nonisolated static var defaultRootURL: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? FileManager.default.temporaryDirectory
-        let bundleID = Bundle.main.bundleIdentifier ?? "com.yourdomain.soundbind"
+        let bundleID = Bundle.main.bundleIdentifier ?? "io.github.tusharonly.soundbind"
         return base.appendingPathComponent(bundleID, isDirectory: true)
     }
 

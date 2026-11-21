@@ -1,6 +1,6 @@
 name: Soundbind
 options:
-  bundleIdPrefix: com.yourdomain
+  bundleIdPrefix: io.github.tusharonly
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
@@ -32,7 +32,7 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSUIElement: true
         LSApplicationCategoryType: public.app-category.utilities
-        NSHumanReadableCopyright: ""
+        NSHumanReadableCopyright: "Copyright © 2026 Tushar Ghige. MIT License."
     entitlements:
       path: Soundbind/Resources/Soundbind.entitlements
       properties:
@@ -42,7 +42,7 @@ targets:
       base:
         PRODUCT_NAME: Soundbind
         SWIFT_OBJC_BRIDGING_HEADER: Soundbind/Support/Soundbind-Bridging-Header.h
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourdomain.soundbind
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.tusharonly.soundbind
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "-"
@@ -60,7 +60,7 @@ targets:
       - package: KeyboardShortcuts
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourdomain.soundbind.tests
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.tusharonly.soundbind.tests
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "-"
