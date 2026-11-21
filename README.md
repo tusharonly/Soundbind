@@ -58,7 +58,23 @@
 
 ## Install
 
-There is no prebuilt download yet, so build it from source. You need Xcode 16.3 or later and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+1. Download **[Soundbind-0.0.1.dmg](https://github.com/tusharonly/Soundbind/releases/latest)** from the latest release.
+2. Open it and drag **Soundbind** into **Applications**.
+3. Open Soundbind, then click the key-and-sound-waves icon in the menu bar and choose **Open Soundbind…**.
+
+Requires macOS 14 or later, on Apple silicon or Intel.
+
+> [!IMPORTANT]
+> Soundbind is not yet notarized by Apple, so macOS blocks it the first time. After trying to open it once, go to **System Settings > Privacy & Security**, scroll down and click **Open Anyway**. Or run this once in Terminal:
+>
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/Soundbind.app
+> ```
+
+<details>
+<summary><b>Build from source instead</b></summary>
+
+You need Xcode 16.3 or later and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```sh
 brew install xcodegen
@@ -69,7 +85,9 @@ xcodebuild -scheme Soundbind -derivedDataPath build build
 open build/Build/Products/Debug/Soundbind.app
 ```
 
-Then click the key-and-sound-waves icon in the menu bar and choose **Open Soundbind…**.
+`scripts/make_dmg.sh` builds the release disk image.
+
+</details>
 
 ## Keyboard
 
